@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
-from myapp.models import Zupanija, Grad
+from myapp.models import Zupanija
 import json
 import os
 
 class Command(BaseCommand):
-    help = 'Napuni gradove iz JSON datoteke'
+    help = 'Napuni zupanije iz JSON datoteke'
 
     def handle(self, *args, **kwargs):
         
@@ -20,12 +20,5 @@ class Command(BaseCommand):
             zupanija, created = Zupanija.objects.get_or_create(naziv=zupanija_name)
             if created:
                 self.stdout.write(self.style.SUCCESS(f'Kreirana zupanija: {zupanija}'))
-
-            gradovi = entry['gradovi']
-            for grad_entry in gradovi:
-                grad_ime = grad_entry['grad']
-                grad, created = Grad.objects.get_or_create(naziv=grad_ime, zupanija=zupanija)
-                if created:
-                    self.stdout.write(self.style.SUCCESS(f'Kreiran grad: {grad}'))
 
         self.stdout.write(self.style.SUCCESS('Izvršeno punjenje'))

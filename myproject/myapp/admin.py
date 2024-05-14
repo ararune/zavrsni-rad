@@ -1,10 +1,10 @@
 # admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Korisnik, Zupanija, Grad
+from .models import Korisnik, Zupanija
 
 class KorisnikAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'grad')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'oib', 'zupanija', 'grad')}),
@@ -17,9 +17,10 @@ class KorisnikAdmin(UserAdmin):
             'fields': ('username', 'email', 'password1', 'password2', 'oib', 'zupanija', 'grad', 'is_staff', 'is_superuser'),
         }),
     )
-    search_fields = ('username', 'email', 'first_name', 'last_name')
+    search_fields = ('username', 'email', 'first_name', 'last_name', 'grad')
     ordering = ('username',)
+
+
 
 admin.site.register(Korisnik, KorisnikAdmin)
 admin.site.register(Zupanija)
-admin.site.register(Grad)

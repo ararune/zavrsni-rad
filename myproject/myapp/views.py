@@ -26,4 +26,7 @@ def pocetna(request):
     korisnik = request.user
     return render(request, 'pocetna.html', {'korisnik': korisnik})
 
-
+@login_required
+def profil(request):
+    korisnik = request.user
+    return render(request, 'profil.html', {'korisnik': korisnik})

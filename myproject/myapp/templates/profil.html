@@ -1,0 +1,16 @@
+<!-- profil.html -->
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+</head>
+<body>
+    <h2>Profil korisnika</h2>
+    <p>Korisničko ime: {{ korisnik.username }}</p>
+    <p>Email: {{ korisnik.email }}</p>
+    <!-- Add more user information here if needed -->
+    <a href="{% url 'pocetna' %}">Povratak na početnu</a>
+</body>
+</html>

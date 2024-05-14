@@ -1,16 +1,16 @@
 # forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Korisnik, Zupanija, Grad
+from .models import Korisnik, Zupanija
 
 class FormaZaIzraduKorisnika(UserCreationForm):
     zupanija = forms.ModelChoiceField(queryset=Zupanija.objects.all(), empty_label="Odaberi županiju", required=True)
-    grad = forms.ModelChoiceField(queryset=Grad.objects.all(), empty_label="Odaberi grad", required=True)
+    grad = forms.CharField(max_length=100, required=False)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = Korisnik
-        fields = ['username', 'email', 'password1', 'password2', 'oib', 'zupanija', 'grad']
+        fields = ['username', 'email', 'password1', 'password2', 'oib', 'zupanija', 'grad'] 
         widgets = {
             'password1': forms.PasswordInput(),
         }
