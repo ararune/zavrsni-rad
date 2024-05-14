@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 LOGIN_URL = '/prijava/'
 LOGIN_REDIRECT_URL = 'pocetna'
 LOGOUT_REDIRECT_URL = 'pocetna'
+AUTH_USER_MODEL = 'myapp.Korisnik'
+
 
 
 
