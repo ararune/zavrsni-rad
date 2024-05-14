@@ -1,16 +1,17 @@
 # forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Korisnik, Zupanija
+from .models import Korisnik, Zupanija, Grad
+
 
 class FormaZaIzraduKorisnika(UserCreationForm):
     zupanija = forms.ModelChoiceField(queryset=Zupanija.objects.all(), empty_label="Odaberi županiju", required=True)
-    grad = forms.CharField(max_length=100, required=False)
+    grad = forms.ModelChoiceField(queryset=Grad.objects.none(), empty_label="Odaberi grad", required=False)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = Korisnik
-        fields = ['username', 'email', 'password1', 'password2', 'oib', 'zupanija', 'grad'] 
+        fields = ['username', 'email', 'password1', 'password2', 'oib', 'zupanija', 'grad']
         widgets = {
             'password1': forms.PasswordInput(),
         }
@@ -28,3 +29,14 @@ class FormaZaIzraduKorisnika(UserCreationForm):
             if not cleaned_data.get(field_name):
                 self.add_error(field_name, f'This field is required.')
         return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'zupanija' in self.data:
+            try:
+                zupanija_id = int(self.data.get('zupanija'))
+                self.fields['grad'].queryset = Grad.objects.filter(zupanija_id=zupanija_id)
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Grad queryset
+        elif self.instance.pk:
+            self.fields['grad'].queryset = self.instance.zupanija.grad_set.none()

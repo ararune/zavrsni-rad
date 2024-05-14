@@ -169,9 +169,6 @@ __pycache__/
 # Node.js
 node_modules/
 
-# React build
-/build/
-
 # Django static files
 /staticfiles/
 

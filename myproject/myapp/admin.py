@@ -1,7 +1,7 @@
 # admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Korisnik, Zupanija
+from .models import Korisnik, Zupanija, Grad
 
 class KorisnikAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'grad')
@@ -24,3 +24,4 @@ class KorisnikAdmin(UserAdmin):
 
 admin.site.register(Korisnik, KorisnikAdmin)
 admin.site.register(Zupanija)
+admin.site.register(Grad)
