@@ -14,7 +14,7 @@
                 var zupanijaId = $(this).val();
                 if(zupanijaId){
                     $.ajax({
-                        url: '{% url "gradovi_by_zupanija" %}',
+                        url: '{% url "gradovi_po_zupaniji" %}',
                         type: 'GET',
                         data: {'zupanija_id': zupanijaId},
                         success: function(data){

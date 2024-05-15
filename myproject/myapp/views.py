@@ -33,7 +33,7 @@ def profil(request):
     korisnik = request.user
     return render(request, 'profil.html', {'korisnik': korisnik})
 
-def gradovi_by_zupanija(request):
+def gradovi_po_zupaniji(request):
     zupanija_id = request.GET.get('zupanija_id')
     gradovi = Grad.objects.filter(zupanija_id=zupanija_id)
     data = [{'id': grad.id, 'naziv': grad.naziv} for grad in gradovi]

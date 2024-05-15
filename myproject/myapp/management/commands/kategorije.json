@@ -1,0 +1,83 @@
+{
+  "Glazbala": {
+    "Trzalački instrumenti i oprema": {
+      "Električne gitare": {},
+      "Akustične gitare": {},
+      "Klasične gitare": {},
+      "Drugi trzalački instrumenti": {}
+    },
+    "Gudački instrumenti i oprema": {
+      "Violina": {},
+      "Viola": {},
+      "Violončelo": {},
+      "Kontrabas": {},
+      "Ostali gudački instrumenti i oprema": {}
+    },
+    "Puhački instrumenti i oprema": {
+      "Flauta": {},
+      "Klarinet": {},
+      "Saksofon": {},
+      "Trombon": {},
+      "Truba": {},
+      "Ostali puhački instrumenti i oprema": {}
+    },
+    "Udaraljke i oprema": {
+      "Bubnjevi": {},
+      "Timpani": {},
+      "Tamburine": {},
+      "Cajon": {},
+      "Ostale udaraljke i oprema": {}
+    },
+    "Klavijature i oprema": {
+      "Klasični klaviri": {},
+      "Digitalni klaviri": {},
+      "Električne klavijature": {},
+      "Akordeon": {},
+      "Harmonika": {},
+      "Ostale klavijature i oprema": {}
+    },
+    "Razglasi i studio oprema": {
+      "Mikrofoni": {},
+      "Miksete": {},
+      "Pojačala": {},
+      "Zvučnici": {},
+      "Ostala oprema za razglase i studio": {}
+    },
+    "Ostali glazbeni instrumenti": {},
+    "Ostala glazbena oprema": {}
+  },
+  "Nekretnine": {
+    "Stanovi": {},
+    "Kuće": {},
+    "Poslovni prostori": {},
+    "Zemljišta": {}
+  },
+  "Vozila": {
+    "Automobili": {},
+    "Motocikli": {},
+    "Bicikli": {},
+    "Kamioni": {},
+    "Plovila": {}
+  },
+  "Elektronika": {
+    "Mobilni telefoni": {},
+    "Laptopi": {},
+    "Televizori": {},
+    "Kamere": {},
+    "Gaming oprema": {}
+  },
+  "Odjeća i obuća": {
+    "Muška odjeća": {},
+    "Ženska odjeća": {},
+    "Dječja odjeća": {},
+    "Obuća": {},
+    "Modni dodaci": {}
+  },
+  "Sport i rekreacija": {
+    "Fitnes oprema": {},
+    "Sportska odjeća": {},
+    "Sportske obuće": {},
+    "Bicikli": {},
+    "Sportski rekviziti": {}
+  }
+}

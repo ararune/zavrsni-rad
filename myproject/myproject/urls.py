@@ -1,7 +1,7 @@
 # urls.py
 from django.contrib import admin
 from django.urls import path
-from myapp.views import registriraj_korisnika, pocetna, profil, gradovi_by_zupanija
+from myapp.views import registriraj_korisnika, pocetna, profil, gradovi_po_zupaniji
 from django.contrib.auth import views as auth_views
 
 
@@ -11,6 +11,6 @@ urlpatterns = [
     path('prijava/', auth_views.LoginView.as_view(template_name='prijava.html', success_url='/'), name='prijava'),
     path('odjava/', auth_views.LogoutView.as_view(next_page='/'), name='odjava'),
     path('profil/', profil, name='profil'),
-    path('gradovi_by_zupanija/', gradovi_by_zupanija, name='gradovi_by_zupanija'),
+    path('gradovi_po_zupaniji/', gradovi_po_zupaniji, name='gradovi_po_zupaniji'),
     path('', pocetna, name='pocetna'),
 ]
