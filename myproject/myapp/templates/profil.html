@@ -10,6 +10,7 @@
     <h2>Profil korisnika</h2>
     <p>Korisničko ime: {{ korisnik.username }}</p>
     <p>Email: {{ korisnik.email }}</p>
+    <p>Datum pridruživanja: {{ korisnik.date_joined|date:"d/m/Y" }}</p>
     <!-- Add more user information here if needed -->
     <a href="{% url 'pocetna' %}">Povratak na početnu</a>
 </body>

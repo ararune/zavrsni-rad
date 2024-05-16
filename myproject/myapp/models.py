@@ -70,6 +70,7 @@ class Oglas(models.Model):
     grad = models.ForeignKey(Grad, on_delete=models.CASCADE)
     trajanje = models.IntegerField(choices=IZBOR_TRAJANJA)
     kategorija = models.ForeignKey(Kategorija, on_delete=models.CASCADE, null=True)
+    
 
     class Meta:
         verbose_name = 'Oglas'

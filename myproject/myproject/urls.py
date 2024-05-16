@@ -1,7 +1,7 @@
 # urls.py
 from django.contrib import admin
 from django.urls import path
-from myapp.views import registriraj_korisnika, pocetna, profil, gradovi_po_zupaniji, kreiraj_oglas
+from myapp.views import registriraj_korisnika, pocetna, profil, gradovi_po_zupaniji, kreiraj_oglas, moji_oglasi
 from django.contrib.auth import views as auth_views
 
 
@@ -13,5 +13,6 @@ urlpatterns = [
     path('profil/', profil, name='profil'),
     path('gradovi_po_zupaniji/', gradovi_po_zupaniji, name='gradovi_po_zupaniji'),
     path('kreiraj_oglas/', kreiraj_oglas, name='kreiraj_oglas'),
+    path('moji_oglasi/', moji_oglasi, name='moji_oglasi'),
     path('', pocetna, name='pocetna'),
 ]

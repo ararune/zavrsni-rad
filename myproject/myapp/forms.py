@@ -45,3 +45,4 @@ class FormaZaIzraduOglasa(forms.ModelForm):
     class Meta:
         model = Oglas
         fields = ['cijena', 'naziv', 'opis', 'zupanija', 'grad', 'trajanje', 'kategorija']
+    

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required  # Add this import
 from django.http import JsonResponse
-from .models import Grad
+from .models import Grad, Oglas, Kategorija
 
 from .forms import FormaZaIzraduKorisnika, FormaZaIzraduOglasa
 def registriraj_korisnika(request):
@@ -52,3 +52,9 @@ def kreiraj_oglas(request):
     else:
         form = FormaZaIzraduOglasa()
     return render(request, 'kreiraj_oglas.html', {'form': form})
+
+@login_required
+def moji_oglasi(request):
+    oglasi = Oglas.objects.filter(korisnik=request.user)
+    return render(request, 'moji_oglasi.html', {'oglasi': oglasi})
+

@@ -12,6 +12,7 @@
         <p>Prijavljeni ste kao: {{ korisnik.username }}</p>
         <a href="{% url 'profil' %}">Profil</a>
         <a href="{% url 'kreiraj_oglas' %}">Kreiraj Oglas</a>
+        <a href="{% url 'moji_oglasi' %}">Moji oglasi</a>
         <form action="{% url 'odjava' %}" method="post">
             {% csrf_token %}
             <button type="submit">Odjava</button>
