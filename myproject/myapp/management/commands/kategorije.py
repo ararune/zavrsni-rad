@@ -1,3 +1,4 @@
+""" kategorije.py """
 import json
 import os
 from django.core.management.base import BaseCommand
@@ -12,8 +13,9 @@ class Command(BaseCommand):
             data = json.load(file)
             self.kreiraj_kategorije(data)
 
-    def kreiraj_kategorije(self, data, parent=None):
+    def kreiraj_kategorije(self, data, roditelj=None):
         for naziv, children in data.items():
-            kategorija = Kategorija.objects.create(naziv=naziv, parent=parent)
+            kategorija = Kategorija.objects.create(naziv=naziv, roditelj=roditelj)
+            self.stdout.write(self.style.SUCCESS(f'Dodana kategorija: {kategorija}'))
             if children:
                 self.kreiraj_kategorije(children, kategorija)

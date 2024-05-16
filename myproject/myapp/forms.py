@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Korisnik, Zupanija, Grad
+from .models import Korisnik, Zupanija, Grad, Oglas
 
 
 class FormaZaIzraduKorisnika(UserCreationForm):
@@ -40,3 +40,8 @@ class FormaZaIzraduKorisnika(UserCreationForm):
                 pass  # invalid input from the client; ignore and fallback to empty Grad queryset
         elif self.instance.pk:
             self.fields['grad'].queryset = self.instance.zupanija.grad_set.none()
+
+class FormaZaIzraduOglasa(forms.ModelForm):
+    class Meta:
+        model = Oglas
+        fields = ['cijena', 'naziv', 'opis', 'zupanija', 'grad', 'trajanje', 'kategorija']

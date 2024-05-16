@@ -10,15 +10,13 @@
     <h2>Dobrodošli!</h2>
     {% if korisnik.is_authenticated %}
         <p>Prijavljeni ste kao: {{ korisnik.username }}</p>
-        <!-- Add link to user profile -->
         <a href="{% url 'profil' %}">Profil</a>
-        <!-- Add logout button if the user is logged in -->
+        <a href="{% url 'kreiraj_oglas' %}">Kreiraj Oglas</a>
         <form action="{% url 'odjava' %}" method="post">
             {% csrf_token %}
             <button type="submit">Odjava</button>
         </form>
     {% else %}
-        <!-- Add login and registration buttons if the user is not logged in -->
         <a href="{% url 'prijava' %}">Prijava</a>
         <a href="{% url 'registracija' %}">Registracija</a>
     {% endif %}

@@ -1,0 +1,46 @@
+<!-- kreiraj_oglas.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreiraj Oglas</title>
+    <!-- Include jQuery library -->
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // Function to load Grad dropdown options based on selected Zupanija
+            $('#id_zupanija').change(function(){
+                var zupanijaId = $(this).val();
+                if(zupanijaId){
+                    $.ajax({
+                        url: '{% url "gradovi_po_zupaniji" %}',
+                        type: 'GET',
+                        data: {'zupanija_id': zupanijaId},
+                        success: function(data){
+                            $('#id_grad').empty(); // Clear existing options
+                            $.each(data, function(index, grad) {
+                                $('#id_grad').append('<option value="' + grad.id + '">' + grad.naziv + '</option>');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error); // Log any errors to the console
+                        }
+                    });
+                } else {
+                    $('#id_grad').empty(); // Clear the Grad dropdown if no Zupanija is selected
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Kreiraj Oglas</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Kreiraj Oglas</button>
+    </form>
+</body>
+</html>

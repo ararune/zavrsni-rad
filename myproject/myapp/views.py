@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required  # Add this import
 from django.http import JsonResponse
 from .models import Grad
 
-from .forms import FormaZaIzraduKorisnika
+from .forms import FormaZaIzraduKorisnika, FormaZaIzraduOglasa
 def registriraj_korisnika(request):
     if request.method == 'POST':
         form = FormaZaIzraduKorisnika(request.POST)
@@ -38,3 +38,17 @@ def gradovi_po_zupaniji(request):
     gradovi = Grad.objects.filter(zupanija_id=zupanija_id)
     data = [{'id': grad.id, 'naziv': grad.naziv} for grad in gradovi]
     return JsonResponse(data, safe=False)
+
+
+@login_required
+def kreiraj_oglas(request):
+    if request.method == 'POST':
+        form = FormaZaIzraduOglasa(request.POST)
+        if form.is_valid():
+            oglas = form.save(commit=False)
+            oglas.korisnik = request.user
+            oglas.save()
+            return redirect('pocetna')  # Redirect to the homepage upon successful creation
+    else:
+        form = FormaZaIzraduOglasa()
+    return render(request, 'kreiraj_oglas.html', {'form': form})
