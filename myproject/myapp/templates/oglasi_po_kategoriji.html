@@ -6,26 +6,25 @@
     <title>Oglasi po kategoriji</title>
 </head>
 <body>
-    <!-- Navigation links -->
+    <!-- Navigacijski linkovi -->
     <p>
-        <a href="{% url 'pocetna' %}">Pocetna</a> 
-        {% if kategorija.roditelj %}
-            > <a href="{% url 'oglasi_po_kategoriji' kategorija.roditelj.naziv %}">{{ kategorija.roditelj.naziv }}</a>
-        {% endif %}
-        > {{ kategorija.naziv }}
+        <a href="{% url 'pocetna' %}">Početna</a>
+        {% for kat in hijerarhija %}
+            > <a href="{% url 'oglasi_po_kategoriji' kat.naziv %}">{{ kat.naziv }}</a>
+        {% endfor %}
     </p>
 
     <h2>Oglasi po kategoriji: {{ kategorija.naziv }}</h2>
- 
-    <!-- Links to children categories -->
+
+    <!-- Linkovi za podkategorije -->
     <h3>Podkategorije:</h3>
     <ul>
-        {% for child in kategorija.children.all %}
-            <li><a href="{% url 'oglasi_po_kategoriji' child.naziv %}">{{ child.naziv }}</a></li>
-            {% if child.children.exists %}
+        {% for dijete in kategorija.children.all %}
+            <li><a href="{% url 'oglasi_po_kategoriji' dijete.naziv %}">{{ dijete.naziv }}</a></li>
+            {% if dijete.children.exists %}
                 <ul>
-                    {% for subchild in child.children.all %}
-                        <li><a href="{% url 'oglasi_po_kategoriji' subchild.naziv %}">{{ subchild.naziv }}</a></li>
+                    {% for poddijete in dijete.children.all %}
+                        <li><a href="{% url 'oglasi_po_kategoriji' poddijete.naziv %}">{{ poddijete.naziv }}</a></li>
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -37,7 +36,7 @@
             <h3>{{ oglas.naziv }}</h3>
             {% if oglas.slike.all %}
                 {% with slika=oglas.slike.first %}
-                    <img src="data:image/jpeg;base64,{{ slika.slika }}" alt="Thumbnail" style="max-width: 100px; max-height: 100px;">
+                    <img src="data:image/jpeg;base64,{{ slika.slika }}" alt="Sličica" style="max-width: 100px; max-height: 100px;">
                 {% endwith %}
             {% endif %}
             <p>{{ oglas.opis }}</p>

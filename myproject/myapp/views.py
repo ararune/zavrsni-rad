@@ -71,15 +71,23 @@ def oglasi_po_kategoriji(request, naziv):
     kategorija = get_object_or_404(Kategorija, naziv=naziv)
 
     # Rek. Funkcija za dohvaćanje svih potkategorija
-    def dohvati_potkategorije(kategorija):
+    def dohvati_podkategorije(kategorija):
         potkategorije = [kategorija]
         for dijete in kategorija.children.all():
-            potkategorije.extend(dohvati_potkategorije(dijete))
+            potkategorije.extend(dohvati_podkategorije(dijete))
         return potkategorije
 
-    potkategorije = dohvati_potkategorije(kategorija)
+    potkategorije = dohvati_podkategorije(kategorija)
 
     # Filtriranje objekata Oglas na temelju potkategorija
     oglasi = Oglas.objects.filter(kategorija__in=potkategorije)
     
-    return render(request, 'oglasi_po_kategoriji.html', {'kategorija': kategorija, 'oglasi': oglasi})
+    # Generiraj hijerarhiju
+    hijerarhija = []
+    trenutna_kategorija = kategorija
+    while trenutna_kategorija:
+        hijerarhija.insert(0, trenutna_kategorija)
+        trenutna_kategorija = trenutna_kategorija.roditelj
+
+    return render(request, 'oglasi_po_kategoriji.html', {'kategorija': kategorija, 'oglasi': oglasi, 'hijerarhija': hijerarhija})
+
