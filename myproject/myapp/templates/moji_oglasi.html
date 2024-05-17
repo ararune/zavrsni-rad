@@ -1,36 +1,52 @@
 <!-- moji_oglasi.html -->
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moji oglasi</title>
+    <style>
+        .oglas-image {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
 </head>
+
 <body>
     <a href="{% url 'pocetna' %}">Pocetna</a>
     <h2>Moji oglasi</h2>
     <ul>
         {% for oglas in oglasi %}
-            <li>
-                <strong>Naziv:</strong> {{ oglas.naziv }}<br>
-                <strong>Cijena:</strong> {{ oglas.cijena }}<br>
-                <strong>Opis:</strong> {{ oglas.opis }}<br>
-                <strong>Trajanje:</strong> {{ oglas.get_trajanje_display }}<br>
-                <strong>Županija:</strong> {{ oglas.zupanija.naziv }}<br>
-                <strong>Grad:</strong> {{ oglas.grad.naziv }}<br>
-                <strong>Kategorija:</strong> 
-                {% if oglas.kategorija %}
-                    {{ oglas.kategorija.naziv }}
-                    {% if oglas.kategorija.roditelj %}
-                        ({{ oglas.kategorija.roditelj.naziv }})
-                    {% endif %}
-                {% else %}
-                    N/A
-                {% endif %}<br>
-            </li>
+        <li>
+            <strong>Naziv:</strong> {{ oglas.naziv }}<br>
+            <strong>Cijena:</strong> {{ oglas.cijena }}<br>
+            <strong>Opis:</strong> {{ oglas.opis }}<br>
+            <strong>Trajanje:</strong> {{ oglas.get_trajanje_display }}<br>
+            <strong>Županija:</strong> {{ oglas.zupanija.naziv }}<br>
+            <strong>Grad:</strong> {{ oglas.grad.naziv }}<br>
+            <strong>Kategorija:</strong>
+            {% if oglas.kategorija %}
+            {{ oglas.kategorija.naziv }}
+            {% if oglas.kategorija.roditelj %}
+            ({{ oglas.kategorija.roditelj.naziv }})
+            {% endif %}
+            {% else %}
+            N/A
+            {% endif %}<br>
+            {% if oglas.slike.exists %}
+            {% for slika in oglas.slike.all %}
+            <img src="data:image/jpeg;base64,{{ slika.slika }}" alt="Slika oglasa" class="oglas-image">
+            {% endfor %}
+            {% else %}
+            Nema slika.
+            {% endif %}
+        </li>
         {% empty %}
-            <li>Nema oglasa.</li>
+        <li>Nema oglasa.</li>
         {% endfor %}
     </ul>
 </body>
+
 </html>

@@ -1,7 +1,8 @@
 # admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Korisnik, Zupanija, Grad, Kategorija, Oglas
+from .models import Korisnik, Zupanija, Grad, Kategorija, Oglas, Slika
+from django.utils.html import format_html
 
 class KorisnikAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'grad')
@@ -28,6 +29,7 @@ class GradAdmin(admin.ModelAdmin):
     
 class OglasAdmin(admin.ModelAdmin):
     list_display = ('naziv', 'kategorija', 'cijena', 'sifra', 'korisnik', 'zupanija', 'grad', 'trajanje')
+
 
 admin.site.register(Korisnik, KorisnikAdmin)
 admin.site.register(Zupanija)

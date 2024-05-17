@@ -4,7 +4,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required  # Add this import
 from django.http import JsonResponse
-from .models import Grad, Oglas, Kategorija
+from .models import Grad, Oglas, Kategorija, Slika
+import base64
+from django.core.files.base import ContentFile
 
 from .forms import FormaZaIzraduKorisnika, FormaZaIzraduOglasa
 def registriraj_korisnika(request):
@@ -43,15 +45,20 @@ def gradovi_po_zupaniji(request):
 @login_required
 def kreiraj_oglas(request):
     if request.method == 'POST':
-        form = FormaZaIzraduOglasa(request.POST)
+        form = FormaZaIzraduOglasa(request.POST, request.FILES)
         if form.is_valid():
             oglas = form.save(commit=False)
             oglas.korisnik = request.user
             oglas.save()
-            return redirect('pocetna')  # Redirect to the homepage upon successful creation
+            for img in request.FILES.getlist('slike'):
+                # Enkodiranje slike u base64 za pohranu
+                img_str = base64.b64encode(img.read()).decode('utf-8')
+                Slika.objects.create(oglas=oglas, slika=img_str)
+            return redirect('pocetna')
     else:
         form = FormaZaIzraduOglasa()
     return render(request, 'kreiraj_oglas.html', {'form': form})
+
 
 @login_required
 def moji_oglasi(request):

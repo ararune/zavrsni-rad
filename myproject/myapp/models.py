@@ -78,3 +78,10 @@ class Oglas(models.Model):
 
     def __str__(self):
         return self.naziv
+
+class Slika(models.Model):
+    oglas = models.ForeignKey(Oglas, on_delete=models.CASCADE, related_name='slike')
+    slika = models.ImageField()
+
+    def __str__(self):
+        return f"Slika za {self.oglas.naziv}"

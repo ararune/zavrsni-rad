@@ -32,16 +32,29 @@
                     $('#id_grad').empty(); // Clear the Grad dropdown if no Zupanija is selected
                 }
             });
+    
+            // Multiple file upload handling
+            $('#id_slike').on('change', function(){
+                var files = $(this).get(0).files;
+                var fileNames = '';
+                for (var i = 0; i < files.length; i++) {
+                    fileNames += files[i].name + ', ';
+                }
+                // Display selected file names
+                $('#selected-files').text(fileNames);
+            });
         });
     </script>
+    
 </head>
 <body>
     <a href="{% url 'pocetna' %}">Pocetna</a>
     <h2>Kreiraj Oglas</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Kreiraj Oglas</button>
-    </form>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Kreiraj Oglas</button>
+</form>
+
 </body>
 </html>
