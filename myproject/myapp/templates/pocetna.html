@@ -21,5 +21,15 @@
         <a href="{% url 'prijava' %}">Prijava</a>
         <a href="{% url 'registracija' %}">Registracija</a>
     {% endif %}
+
+    <h3>Top kategorije:</h3>
+    <ul>
+        <li><a href="{% url 'oglasi_po_kategoriji' 'Glazbala' %}">Glazbala</a></li>
+        <li><a href="{% url 'oglasi_po_kategoriji' 'Nekretnine' %}">Nekretnine</a></li>
+        <li><a href="{% url 'oglasi_po_kategoriji' 'Vozila' %}">Vozila</a></li>
+        <li><a href="{% url 'oglasi_po_kategoriji' 'Elektronika' %}">Elektronika</a></li>
+        <li><a href="{% url 'oglasi_po_kategoriji' 'Odjeća i obuća' %}">Odjeća i obuća</a></li>
+        <li><a href="{% url 'oglasi_po_kategoriji' 'Sport i rekreacija' %}">Sport i rekreacija</a></li>
+    </ul>
 </body>
 </html>

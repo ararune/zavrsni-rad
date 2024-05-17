@@ -1,5 +1,5 @@
 # views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required  # Add this import
@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from .models import Grad, Oglas, Kategorija, Slika
 import base64
 from django.core.files.base import ContentFile
+
+
 
 from .forms import FormaZaIzraduKorisnika, FormaZaIzraduOglasa
 def registriraj_korisnika(request):
@@ -65,3 +67,19 @@ def moji_oglasi(request):
     oglasi = Oglas.objects.filter(korisnik=request.user)
     return render(request, 'moji_oglasi.html', {'oglasi': oglasi})
 
+def oglasi_po_kategoriji(request, naziv):
+    kategorija = get_object_or_404(Kategorija, naziv=naziv)
+
+    # Rek. Funkcija za dohvaćanje svih potkategorija
+    def dohvati_potkategorije(kategorija):
+        potkategorije = [kategorija]
+        for dijete in kategorija.children.all():
+            potkategorije.extend(dohvati_potkategorije(dijete))
+        return potkategorije
+
+    potkategorije = dohvati_potkategorije(kategorija)
+
+    # Filtriranje objekata Oglas na temelju potkategorija
+    oglasi = Oglas.objects.filter(kategorija__in=potkategorije)
+    
+    return render(request, 'oglasi_po_kategoriji.html', {'kategorija': kategorija, 'oglasi': oglasi})

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oglasi po kategoriji</title>
+</head>
+<body>
+    <!-- Navigation links -->
+    <p>
+        <a href="{% url 'pocetna' %}">Pocetna</a> 
+        {% if kategorija.roditelj %}
+            > <a href="{% url 'oglasi_po_kategoriji' kategorija.roditelj.naziv %}">{{ kategorija.roditelj.naziv }}</a>
+        {% endif %}
+        > {{ kategorija.naziv }}
+    </p>
+
+    <h2>Oglasi po kategoriji: {{ kategorija.naziv }}</h2>
+ 
+    <!-- Links to children categories -->
+    <h3>Podkategorije:</h3>
+    <ul>
+        {% for child in kategorija.children.all %}
+            <li><a href="{% url 'oglasi_po_kategoriji' child.naziv %}">{{ child.naziv }}</a></li>
+            {% if child.children.exists %}
+                <ul>
+                    {% for subchild in child.children.all %}
+                        <li><a href="{% url 'oglasi_po_kategoriji' subchild.naziv %}">{{ subchild.naziv }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    {% for oglas in oglasi %}
+        <div>
+            <h3>{{ oglas.naziv }}</h3>
+            {% if oglas.slike.all %}
+                {% with slika=oglas.slike.first %}
+                    <img src="data:image/jpeg;base64,{{ slika.slika }}" alt="Thumbnail" style="max-width: 100px; max-height: 100px;">
+                {% endwith %}
+            {% endif %}
+            <p>{{ oglas.opis }}</p>
+            <p>{{ oglas.cijena }} €</p>
+        </div>
+    {% empty %}
+        <p>Nema dostupnih oglasa u ovoj kategoriji.</p>
+    {% endfor %}
+</body>
+</html>
