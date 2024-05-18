@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 import uuid
 
+
 class Zupanija(models.Model):
     naziv = models.CharField(max_length=100, unique=True)
 
@@ -40,6 +41,7 @@ class Korisnik(AbstractUser):
 class Kategorija(models.Model):
     naziv = models.CharField(max_length=100)
     roditelj = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    url = models.CharField(max_length=100, unique=True, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Kategorija'

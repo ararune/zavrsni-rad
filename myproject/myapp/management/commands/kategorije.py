@@ -14,8 +14,10 @@ class Command(BaseCommand):
             self.kreiraj_kategorije(data)
 
     def kreiraj_kategorije(self, data, roditelj=None):
-        for naziv, children in data.items():
-            kategorija = Kategorija.objects.create(naziv=naziv, roditelj=roditelj)
-            self.stdout.write(self.style.SUCCESS(f'Dodana kategorija: {kategorija}'))
+        for naziv, details in data.items():
+            url = details.get('url')
+            children = {k: v for k, v in details.items() if k != 'url'}
+            kategorija = Kategorija.objects.create(naziv=naziv, url=url, roditelj=roditelj)
+            self.stdout.write(self.style.SUCCESS(f'Dodana kategorija: {kategorija} s URL-om: {url}'))
             if children:
                 self.kreiraj_kategorije(children, kategorija)

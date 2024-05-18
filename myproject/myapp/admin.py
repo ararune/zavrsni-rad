@@ -8,7 +8,7 @@ class KorisnikAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'grad')
 
 class KategorijaAdmin(admin.ModelAdmin):
-    list_display = ('naziv', 'roditelj')
+    list_display = ('naziv', 'roditelj', 'url')
 
 class GradAdmin(admin.ModelAdmin):
     list_display = ('naziv', 'zupanija')

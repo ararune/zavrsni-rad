@@ -1,27 +1,21 @@
-# views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.decorators import login_required  # Add this import
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Grad, Oglas, Kategorija, Slika
-import base64
-from django.core.files.base import ContentFile
-
-
-
 from .forms import FormaZaIzraduKorisnika, FormaZaIzraduOglasa
+import base64
+
+
 def registriraj_korisnika(request):
     if request.method == 'POST':
         form = FormaZaIzraduKorisnika(request.POST)
         if form.is_valid():
             user = form.save()
-            # Log in the user after registration
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            # Redirect to pocetna after successful registration and login
             return redirect('pocetna')
     else:
         form = FormaZaIzraduKorisnika()
@@ -32,10 +26,12 @@ def pocetna(request):
     korisnik = request.user
     return render(request, 'pocetna.html', {'korisnik': korisnik})
 
+
 @login_required
 def profil(request):
     korisnik = request.user
     return render(request, 'profil.html', {'korisnik': korisnik})
+
 
 def gradovi_po_zupaniji(request):
     zupanija_id = request.GET.get('zupanija_id')
@@ -53,7 +49,6 @@ def kreiraj_oglas(request):
             oglas.korisnik = request.user
             oglas.save()
             for img in request.FILES.getlist('slike'):
-                # Enkodiranje slike u base64 za pohranu
                 img_str = base64.b64encode(img.read()).decode('utf-8')
                 Slika.objects.create(oglas=oglas, slika=img_str)
             return redirect('pocetna')
@@ -67,10 +62,10 @@ def moji_oglasi(request):
     oglasi = Oglas.objects.filter(korisnik=request.user)
     return render(request, 'moji_oglasi.html', {'oglasi': oglasi})
 
-def oglasi_po_kategoriji(request, naziv):
-    kategorija = get_object_or_404(Kategorija, naziv=naziv)
 
-    # Rek. Funkcija za dohvaćanje svih potkategorija
+def oglasi_po_kategoriji(request, url):
+    kategorija = get_object_or_404(Kategorija, url=url)
+
     def dohvati_podkategorije(kategorija):
         potkategorije = [kategorija]
         for dijete in kategorija.children.all():
@@ -78,11 +73,8 @@ def oglasi_po_kategoriji(request, naziv):
         return potkategorije
 
     potkategorije = dohvati_podkategorije(kategorija)
-
-    # Filtriranje objekata Oglas na temelju potkategorija
     oglasi = Oglas.objects.filter(kategorija__in=potkategorije)
-    
-    # Generiraj hijerarhiju
+
     hijerarhija = []
     trenutna_kategorija = kategorija
     while trenutna_kategorija:
@@ -91,3 +83,15 @@ def oglasi_po_kategoriji(request, naziv):
 
     return render(request, 'oglasi_po_kategoriji.html', {'kategorija': kategorija, 'oglasi': oglasi, 'hijerarhija': hijerarhija})
 
+
+def oglas_detalji(request, kategorija_url, oglas_naziv, sifra):
+    oglas = get_object_or_404(Oglas, sifra=sifra)
+    slike = oglas.slike.all()
+
+    hijerarhija = []
+    trenutna_kategorija = oglas.kategorija
+    while trenutna_kategorija:
+        hijerarhija.insert(0, trenutna_kategorija)
+        trenutna_kategorija = trenutna_kategorija.roditelj
+
+    return render(request, 'oglas_detalji.html', {'oglas': oglas, 'slike': slike, 'hijerarhija': hijerarhija})

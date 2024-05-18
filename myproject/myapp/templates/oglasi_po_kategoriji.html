@@ -1,3 +1,4 @@
+<!-- oglasi_po_kategoriji.html  -->
 <!DOCTYPE html>
 <html lang="hr">
 <head>
@@ -6,44 +7,36 @@
     <title>Oglasi po kategoriji</title>
 </head>
 <body>
-    <!-- Navigacijski linkovi -->
     <p>
-        <a href="{% url 'pocetna' %}">Početna</a>
+        <a href="{% url 'pocetna' %}">Oglasnik</a>
         {% for kat in hijerarhija %}
-            > <a href="{% url 'oglasi_po_kategoriji' kat.naziv %}">{{ kat.naziv }}</a>
+            > <a href="{% url 'oglasi_po_kategoriji' kat.url %}">{{ kat.naziv }}</a>
         {% endfor %}
     </p>
 
     <h2>Oglasi po kategoriji: {{ kategorija.naziv }}</h2>
 
-    <!-- Linkovi za podkategorije -->
     <h3>Podkategorije:</h3>
     <ul>
-        {% for dijete in kategorija.children.all %}
-            <li><a href="{% url 'oglasi_po_kategoriji' dijete.naziv %}">{{ dijete.naziv }}</a></li>
-            {% if dijete.children.exists %}
-                <ul>
-                    {% for poddijete in dijete.children.all %}
-                        <li><a href="{% url 'oglasi_po_kategoriji' poddijete.naziv %}">{{ poddijete.naziv }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+        {% for kat in kategorija.children.all %}
+            <li><a href="{% url 'oglasi_po_kategoriji' kat.url %}">{{ kat.naziv }}</a></li>
         {% endfor %}
     </ul>
 
-    {% for oglas in oglasi %}
-        <div>
-            <h3>{{ oglas.naziv }}</h3>
-            {% if oglas.slike.all %}
-                {% with slika=oglas.slike.first %}
-                    <img src="data:image/jpeg;base64,{{ slika.slika }}" alt="Sličica" style="max-width: 100px; max-height: 100px;">
-                {% endwith %}
-            {% endif %}
-            <p>{{ oglas.opis }}</p>
-            <p>{{ oglas.cijena }} €</p>
-        </div>
-    {% empty %}
-        <p>Nema dostupnih oglasa u ovoj kategoriji.</p>
-    {% endfor %}
+    <h3>Oglasi:</h3>
+    <ul>
+        {% for oglas in oglasi %}
+            <li>
+                <a href="{% url 'oglas_detalji' oglas.kategorija.url oglas.naziv oglas.sifra %}">
+                    <h4>{{ oglas.naziv }}</h4>
+                </a>
+                {% if oglas.slike.all %}
+                    <img src="data:image/png;base64,{{ oglas.slike.all.0.slika }}" alt="{{ oglas.naziv }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}
+                <p>{{ oglas.opis|truncatewords:20 }}</p>
+                <p>Cijena: {{ oglas.cijena }} HRK</p>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
