@@ -1,3 +1,4 @@
+""" views.py """
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -95,3 +96,33 @@ def oglas_detalji(request, kategorija_url, oglas_naziv, sifra):
         trenutna_kategorija = trenutna_kategorija.roditelj
 
     return render(request, 'oglas_detalji.html', {'oglas': oglas, 'slike': slike, 'hijerarhija': hijerarhija})
+
+@login_required
+def uredi_oglas(request, kategorija_url, oglas_naziv, sifra):
+    oglas = get_object_or_404(Oglas, sifra=sifra)
+
+    if request.method == 'POST':
+        form = FormaZaIzraduOglasa(request.POST, request.FILES, instance=oglas)
+        if form.is_valid():
+            # Handle image deletion
+            if 'delete_slike' in request.POST:
+                slike_to_delete_ids = request.POST.getlist('delete_slike')
+                oglas.slike.filter(id__in=slike_to_delete_ids).delete()
+            oglas = form.save(commit=False)
+            for img in request.FILES.getlist('slike'):
+                img_str = base64.b64encode(img.read()).decode('utf-8')
+                Slika.objects.create(oglas=oglas, slika=img_str)
+            oglas.save()
+            return redirect('moji_oglasi')
+    else:
+        form = FormaZaIzraduOglasa(instance=oglas)
+
+    return render(request, 'uredi_oglas.html', {'form': form})
+
+@login_required
+def izbrisi_oglas(request, oglas_id):
+    oglas = get_object_or_404(Oglas, id=oglas_id)
+    if request.method == 'POST':
+        oglas.delete()
+        return redirect('moji_oglasi')
+    return redirect('moji_oglasi')  # Redirect to moji_oglasi if the request method is not POST

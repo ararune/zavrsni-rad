@@ -1,7 +1,8 @@
 # urls.py
 from django.contrib import admin
 from django.urls import path
-from myapp.views import registriraj_korisnika, pocetna, profil, gradovi_po_zupaniji, kreiraj_oglas, moji_oglasi, oglasi_po_kategoriji, oglas_detalji
+from myapp.views import registriraj_korisnika, pocetna, profil, gradovi_po_zupaniji, kreiraj_oglas, moji_oglasi, oglasi_po_kategoriji, oglas_detalji, uredi_oglas
+from myapp.views import izbrisi_oglas
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
@@ -17,5 +18,7 @@ urlpatterns = [
     path('moji_oglasi/', moji_oglasi, name='moji_oglasi'),
     path('<str:url>/', oglasi_po_kategoriji, name='oglasi_po_kategoriji'),
     path('<str:kategorija_url>/<str:oglas_naziv>-oglas-<str:sifra>/', oglas_detalji, name='oglas_detalji'),
+    path('<str:kategorija_url>/uredi/<str:oglas_naziv>-oglas-<str:sifra>/', uredi_oglas, name='uredi_oglas'),
+    path('izbrisi_oglas/<int:oglas_id>/', izbrisi_oglas, name='izbrisi_oglas'),
     path('', pocetna, name='pocetna'),
 ]
